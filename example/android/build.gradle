@@ -1,0 +1,36 @@
+/*
+ * Copyright (c) 2022. AppDynamics LLC and its affiliates.
+ * All rights reserved.
+ *
+ */
+
+ buildscript {
+     ext.appd_plugin_version = '24.4.1'
+     repositories{
+         mavenCentral()
+     }
+
+     dependencies {
+         classpath "com.appdynamics:appdynamics-gradle-plugin:$appd_plugin_version"
+     }
+ }
+
+allprojects {
+    repositories {
+        mavenLocal()
+        google()
+        mavenCentral()
+    }
+}
+
+rootProject.buildDir = '../build'
+subprojects {
+    project.buildDir = "${rootProject.buildDir}/${project.name}"
+}
+subprojects {
+    project.evaluationDependsOn(':app')
+}
+
+tasks.register("clean", Delete) {
+    delete rootProject.buildDir
+}
